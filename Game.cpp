@@ -38,6 +38,7 @@ void Game::loop(){
 				}
 				else if(map.data[iy*map.w+ix] == 0){
 					glCallList(floor);
+					//glCallList(ceiling);
 				}
 				glTranslatef(1,0,0);
 			}
@@ -50,8 +51,7 @@ void Game::loop(){
 
 		glTranslatef(4.5,0,4.5);
 		glRotatef(-pl.dirdeg,0,1,0);
-
-		glCallList(healthpack);
+		glCallList(redghost);
 
 		glDisable(GL_BLEND);
 

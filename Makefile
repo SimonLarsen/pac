@@ -3,4 +3,4 @@ OBJECTS = Game.o Player.o Map.o Pickup.o DisplayLists.o
 
 all:
 	g++ -c $(SOURCES)
-	g++ -o fps -lsfml-graphics -lsfml-system -lGLU $(OBJECTS)
+	g++ -o pac -lsfml-graphics -lsfml-system -lGLU $(OBJECTS)

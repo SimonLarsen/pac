@@ -11,7 +11,10 @@
 
 class Game {
 public:
-	GLuint walls,floor,healthpack,ammopack; // Display lists
+	// Display lists
+	GLuint walls,floor,ceiling;
+	GLuint smalldot,bigdot;
+	GLuint redghost;
 	Map map;
 
 	sf::Texture tiles;

@@ -1,10 +1,12 @@
 #include "Game.hpp"
 
 void Game::compileDisplayLists(){
-	walls = glGenLists(4);
+	walls = glGenLists(6);
 	floor = walls+1;
-	healthpack = walls+2;
-	ammopack = walls+3;
+	ceiling = walls+2;
+	smalldot = walls+3;
+	bigdot = walls+4;
+	redghost = walls+5;
 
 	glNewList(walls,GL_COMPILE);
 	glBegin(GL_QUADS);
@@ -36,7 +38,11 @@ void Game::compileDisplayLists(){
 		glTexCoord2f(0.25f,0.f); 		glVertex3f(1.f,0.f,0.f);
 		glTexCoord2f(0.25f,0.125f); 	glVertex3f(1.f,0.f,1.f);
 		glTexCoord2f(0.125f,0.125f); 	glVertex3f(0.f,0.f,1.f);
+		glEnd();
+	glEndList();
 
+	glNewList(ceiling,GL_COMPILE);
+		glBegin(GL_QUADS);
 		glTexCoord2f(0.25f,0.f); 		glVertex3f(0.f,1.f,0.f);
 		glTexCoord2f(0.375,0.f); 		glVertex3f(1.f,1.f,0.f);
 		glTexCoord2f(0.375,0.125f); 	glVertex3f(1.f,1.f,1.f);
@@ -44,7 +50,7 @@ void Game::compileDisplayLists(){
 		glEnd();
 	glEndList();
 
-	glNewList(healthpack,GL_COMPILE);
+	glNewList(smalldot,GL_COMPILE);
 		glBegin(GL_QUADS);
 		glTexCoord2f(0.f, 0.1875f); 	glVertex3f(-0.25f,0.5f,0.f);
 		glTexCoord2f(0.0625f,0.1875f); 	glVertex3f(0.25f,0.5f,0.f);
@@ -53,12 +59,21 @@ void Game::compileDisplayLists(){
 		glEnd();
 	glEndList();
 
-	glNewList(ammopack,GL_COMPILE);
+	glNewList(bigdot,GL_COMPILE);
 		glBegin(GL_QUADS);
 		glTexCoord2f(0.125f, 0.1875f); 	glVertex3f(-0.25f,0.5f,0.f);
 		glTexCoord2f(0.0625f,0.1875f); 	glVertex3f(0.25f,0.5f,0.f);
 		glTexCoord2f(0.0625f,0.25f); 	glVertex3f(0.25f,0.f,0.f);
 		glTexCoord2f(0.125f, 0.25f); 	glVertex3f(-0.25f,0.f,0.f);
+		glEnd();
+	glEndList();
+
+	glNewList(redghost,GL_COMPILE);
+		glBegin(GL_QUADS);
+		glTexCoord2f(0.f, 0.125f); 	glVertex3f(-0.5f,1.f,0.f);
+		glTexCoord2f(0.0625f,0.125f); 	glVertex3f(0.5f,1.f,0.f);
+		glTexCoord2f(0.0625f,0.1875f); 	glVertex3f(0.5f,0.f,0.f);
+		glTexCoord2f(0.f, 0.1875f); 	glVertex3f(-0.5f,0.f,0.f);
 		glEnd();
 	glEndList();
 }
