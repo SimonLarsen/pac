@@ -30,6 +30,8 @@ void Game::loop(){
 
 		glPushMatrix();
 
+		glDisable(GL_BLEND);
+
 		// Draw walls, floors
 		for(int ix = 0; ix < map.w; ++ix) {
 			for(int iy = 0; iy < map.h; ++iy) {
@@ -44,16 +46,18 @@ void Game::loop(){
 			}
 			glTranslatef(-map.w,0,1);
 		}
+		glPopMatrix();
 
 		glEnable(GL_BLEND);
 
-		glPopMatrix();
-
-		glTranslatef(4.5,0,4.5);
-		glRotatef(-pl.dirdeg,0,1,0);
-		glCallList(redghost);
-
-		glDisable(GL_BLEND);
+		// Draw dots
+		for(int i = 0; i < dots.size(); ++i) {
+			glPushMatrix();
+			glTranslatef(dots.at(i).x,0,dots.at(i).z);
+			glRotatef(-pl.dirdeg,0,1,0);
+			glCallList(smalldot);
+			glPopMatrix();
+		}
 
 		app.Display();
 	}
@@ -92,7 +96,11 @@ bool Game::init(){
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glEnable(GL_TEXTURE_2D);
+	// Blend function
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	// Only allow pixels with alpha > 0.5 to be drawn
+	glAlphaFunc(GL_GREATER,0.5f);
+	glEnable(GL_ALPHA_TEST);
 
 	return true;
 }
@@ -109,6 +117,15 @@ bool Game::loadResources(){
 	if(map.readFromFile("res/map.dat") == false){
 		return false;
 	}
+
+	dots.push_back(Pickup(1.5f,1.5f,pickupSmall));
+	dots.push_back(Pickup(2.5f,1.5f,pickupSmall));
+	dots.push_back(Pickup(3.5f,1.5f,pickupSmall));
+	dots.push_back(Pickup(4.5f,1.5f,pickupSmall));
+	dots.push_back(Pickup(5.5f,1.5f,pickupSmall));
+	dots.push_back(Pickup(6.5f,1.5f,pickupSmall));
+	dots.push_back(Pickup(7.5f,1.5f,pickupSmall));
+	dots.push_back(Pickup(8.5f,1.5f,pickupSmall));
 
 	return true;
 }

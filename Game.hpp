@@ -6,7 +6,9 @@
 #include <SFML/Graphics.hpp>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <vector>
 #include "Player.hpp"
+#include "Pickup.hpp"
 #include "Map.hpp"
 
 class Game {
@@ -16,6 +18,7 @@ public:
 	GLuint smalldot,bigdot;
 	GLuint redghost;
 	Map map;
+	std::vector<Pickup> dots;
 
 	sf::Texture tiles;
 	sf::Window app;

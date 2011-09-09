@@ -1,7 +1,7 @@
 #include "Pickup.hpp"
 
-Pickup::Pickup(int _x, int _y, PickupType _type){
+Pickup::Pickup(float _x, float _z, PickupType _type){
 	x = _x;
-	y = _y;
+	z = _z;
 	type = _type;
 }
