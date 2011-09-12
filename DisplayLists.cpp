@@ -1,13 +1,6 @@
 #include "Game.hpp"
 
 void Game::compileDisplayLists(){
-	walls = glGenLists(6);
-	floor = walls+1;
-	ceiling = walls+2;
-	smalldot = walls+3;
-	bigdot = walls+4;
-	redghost = walls+5;
-
 	glNewList(walls,GL_COMPILE);
 	glBegin(GL_QUADS);
 		glTexCoord2f(0.f,0.f); 			glVertex3f(1.f,1.f,0.f);

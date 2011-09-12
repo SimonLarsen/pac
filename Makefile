@@ -1,5 +1,5 @@
-SOURCES = Game.cpp DisplayLists.cpp Player.cpp Map.cpp Pickup.cpp
-OBJECTS = Game.o Player.o Map.o Pickup.o DisplayLists.o
+SOURCES = Game.cpp DisplayLists.cpp Player.cpp Map.cpp Pickup.cpp Ghost.cpp
+OBJECTS = Game.o Player.o Map.o Pickup.o DisplayLists.o Ghost.o
 
 all:
 	g++ -c $(SOURCES)

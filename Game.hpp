@@ -9,8 +9,9 @@
 #include <vector>
 #include <iostream>
 #include "Player.hpp"
-#include "Pickup.hpp"
 #include "Map.hpp"
+#include "Pickup.hpp"
+#include "Ghost.hpp"
 
 class Game {
 public:
@@ -18,6 +19,7 @@ public:
 	GLuint walls,floor,ceiling;
 	GLuint smalldot,bigdot;
 	GLuint redghost;
+
 	Map map;
 	std::vector<Pickup> dots;
 

@@ -9,6 +9,8 @@ void Game::loop(){
 
 	pl.y = 0.6f;
 
+	Ghost ghost(13.5f,20.5f);
+
 	while(running){
 		float time = clock.GetElapsedTime()/1000.f;
 		elapsedtime += time;
@@ -50,12 +52,9 @@ void Game::loop(){
 
 		// Draw dots
 		for(int i = 0; i < dots.size(); ++i) {
-			glPushMatrix();
-			glTranslatef(dots.at(i).x,0,dots.at(i).z);
-			glRotatef(-pl.dirdeg,0,1,0);
-			glCallList(smalldot);
-			glPopMatrix();
+			dots.at(i).draw(pl.dirdeg);
 		}
+		ghost.draw(pl.dirdeg);
 
 		app.Display();
 	}
@@ -74,6 +73,15 @@ bool Game::init(){
 	if(app.IsOpened() == false){
 		return false;
 	}
+
+	walls = glGenLists(6);
+	floor = walls+1;
+	ceiling = walls+2;
+	smalldot = walls+3;
+	bigdot = walls+4;
+	redghost = walls+5;
+	Pickup::init(smalldot);
+	Ghost::init(redghost);
 
 	if(loadResources() == false){
 		return false;
@@ -99,6 +107,16 @@ bool Game::init(){
 	// Only allow pixels with alpha > 0.5 to be drawn
 	glAlphaFunc(GL_GREATER,0.9f);
 	glEnable(GL_ALPHA_TEST);
+	// Fog stuff
+	GLfloat fogColor[] = {0.f,0.f,0.f,1.f};
+	glClearColor(0.0f,0.0f,0.0f,1.0f);
+	glFogi(GL_FOG_MODE, GL_EXP2);
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogf(GL_FOG_DENSITY, 0.65f);
+	glHint(GL_FOG_HINT, GL_FASTEST);
+	glFogf(GL_FOG_START, 0.4f);
+	glFogf(GL_FOG_END, 6.0f);
+	glEnable(GL_FOG);
 
 	return true;
 }

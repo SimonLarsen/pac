@@ -55,7 +55,7 @@ bool Map::readFromImage(const char* filename, std::vector<Pickup>& dots){
 			else if(p == sf::Color::Blue){
 				data[ix+iy*w] = 1;
 			}
-			else if (p == sf::Color::Magenta){
+			else if (p == sf::Color::Yellow){
 				data[ix+iy*w] = 0;
 				startx = ix+0.5f;
 				startz = iy+0.5f;
