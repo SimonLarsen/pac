@@ -19,9 +19,16 @@ void Game::loop(){
 			if(event.Type == sf::Event::Closed){
 				running = false;
 			}
+			else if(event.Type == sf::Event::GainedFocus){
+				hasFocus = true;
+			}
+			else if(event.Type == sf::Event::LostFocus){
+				hasFocus = false;
+			}
 		}
 
-		pl.update(time, map);
+		pl.update(time, map, app, hasFocus);
+		pl.collideDots(dots);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
@@ -114,7 +121,7 @@ bool Game::init(){
 	glFogfv(GL_FOG_COLOR, fogColor);
 	glFogf(GL_FOG_DENSITY, 0.65f);
 	glHint(GL_FOG_HINT, GL_FASTEST);
-	glFogf(GL_FOG_START, 0.4f);
+	glFogf(GL_FOG_START, 1.0f);
 	glFogf(GL_FOG_END, 6.0f);
 	glEnable(GL_FOG);
 

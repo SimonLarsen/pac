@@ -33,7 +33,7 @@ public:
 	int execute();
 
 private:
-	bool running;
+	bool running, hasFocus;
 	float elapsedtime;
 
 	bool init();
