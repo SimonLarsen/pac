@@ -7,6 +7,7 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <vector>
+#include <iostream>
 #include "Player.hpp"
 #include "Pickup.hpp"
 #include "Map.hpp"
@@ -31,6 +32,7 @@ public:
 
 private:
 	bool running;
+	float elapsedtime;
 
 	bool init();
 	void loop();

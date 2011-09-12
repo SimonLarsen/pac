@@ -7,12 +7,11 @@ Game::Game(){
 void Game::loop(){
 	running = true;
 
-	pl.x = 4.5f;
 	pl.y = 0.6f;
-	pl.z = 4.5f;
 
 	while(running){
 		float time = clock.GetElapsedTime()/1000.f;
+		elapsedtime += time;
 		clock.Reset();
 		while(app.PollEvent(event)){
 			if(event.Type == sf::Event::Closed){
@@ -33,14 +32,13 @@ void Game::loop(){
 		glDisable(GL_BLEND);
 
 		// Draw walls, floors
-		for(int ix = 0; ix < map.w; ++ix) {
-			for(int iy = 0; iy < map.h; ++iy) {
+		for(int iy = 0; iy < map.h; ++iy) {
+			for(int ix = 0; ix < map.w; ++ix) {
 				if(map.data[iy*map.w+ix] == 1){
 					glCallList(walls);
 				}
 				else if(map.data[iy*map.w+ix] == 0){
 					glCallList(floor);
-					//glCallList(ceiling);
 				}
 				glTranslatef(1,0,0);
 			}
@@ -99,14 +97,14 @@ bool Game::init(){
 	// Blend function
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	// Only allow pixels with alpha > 0.5 to be drawn
-	glAlphaFunc(GL_GREATER,0.5f);
+	glAlphaFunc(GL_GREATER,0.9f);
 	glEnable(GL_ALPHA_TEST);
 
 	return true;
 }
 
 bool Game::loadResources(){
-	if(Game::tiles.LoadFromFile("res/tiles.png") == false){
+	if(tiles.LoadFromFile("res/tiles.png") == false){
 		return false;
 	}
 	Game::tiles.SetSmooth(false);
@@ -114,18 +112,12 @@ bool Game::loadResources(){
 
 	compileDisplayLists();
 
-	if(map.readFromFile("res/map.dat") == false){
+	//if(map.readFromFile("res/map.dat") == false){
+	if(map.readFromImage("res/levels/1.png",dots) == false){
 		return false;
 	}
-
-	dots.push_back(Pickup(1.5f,1.5f,pickupSmall));
-	dots.push_back(Pickup(2.5f,1.5f,pickupSmall));
-	dots.push_back(Pickup(3.5f,1.5f,pickupSmall));
-	dots.push_back(Pickup(4.5f,1.5f,pickupSmall));
-	dots.push_back(Pickup(5.5f,1.5f,pickupSmall));
-	dots.push_back(Pickup(6.5f,1.5f,pickupSmall));
-	dots.push_back(Pickup(7.5f,1.5f,pickupSmall));
-	dots.push_back(Pickup(8.5f,1.5f,pickupSmall));
+	pl.x = map.startx;
+	pl.z = map.startz;
 
 	return true;
 }
