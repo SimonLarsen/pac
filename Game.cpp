@@ -9,7 +9,9 @@ void Game::loop(){
 
 	pl.y = 0.6f;
 
-	Ghost ghost(13.5f,20.5f);
+	Ghost ghost(13.75f,20.5f);
+
+	sf::Mouse::SetPosition(sf::Vector2i(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),app);
 
 	while(running){
 		float time = clock.GetElapsedTime()/1000.f;
@@ -33,7 +35,8 @@ void Game::loop(){
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
-		glRotatef(pl.dirdeg,0,1,0);
+		glRotatef(pl.ydirdeg,1,0,0);
+		glRotatef(pl.xdirdeg,0,1,0);
 		glTranslatef(-pl.x,-pl.y,-pl.z);
 
 		glPushMatrix();
@@ -43,11 +46,17 @@ void Game::loop(){
 		// Draw walls, floors
 		for(int iy = 0; iy < map.h; ++iy) {
 			for(int ix = 0; ix < map.w; ++ix) {
-				if(map.data[iy*map.w+ix] == 1){
+				char tile = map.data[iy*map.w+ix];
+				if(tile == 0){
+					glCallList(floor);
+					glCallList(ceiling);
+				}
+				else if(tile == 1){
 					glCallList(walls);
 				}
-				else if(map.data[iy*map.w+ix] == 0){
-					glCallList(floor);
+				else if(tile == 2){
+					glCallList(lampfloor);
+					glCallList(lampceiling);
 				}
 				glTranslatef(1,0,0);
 			}
@@ -59,9 +68,9 @@ void Game::loop(){
 
 		// Draw dots
 		for(int i = 0; i < dots.size(); ++i) {
-			dots.at(i).draw(pl.dirdeg);
+			dots.at(i).draw(pl.xdirdeg);
 		}
-		ghost.draw(pl.dirdeg);
+		ghost.draw(pl.xdirdeg);
 
 		app.Display();
 	}
@@ -80,13 +89,17 @@ bool Game::init(){
 	if(app.IsOpened() == false){
 		return false;
 	}
+	app.ShowMouseCursor(false);
 
-	walls = glGenLists(6);
+	walls = glGenLists(5);
 	floor = walls+1;
-	ceiling = walls+2;
-	smalldot = walls+3;
-	bigdot = walls+4;
-	redghost = walls+5;
+	lampfloor = floor+1;
+	ceiling = lampfloor+1;
+	lampceiling = ceiling+1;
+
+	smalldot = glGenLists(3);
+	bigdot = smalldot+1;
+	redghost = bigdot+1;
 	Pickup::init(smalldot);
 	Ghost::init(redghost);
 
@@ -121,7 +134,7 @@ bool Game::init(){
 	glFogfv(GL_FOG_COLOR, fogColor);
 	glFogf(GL_FOG_DENSITY, 0.65f);
 	glHint(GL_FOG_HINT, GL_FASTEST);
-	glFogf(GL_FOG_START, 1.0f);
+	glFogf(GL_FOG_START, 0.5f);
 	glFogf(GL_FOG_END, 6.0f);
 	glEnable(GL_FOG);
 

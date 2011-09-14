@@ -11,16 +11,17 @@
 class Player {
 public:
 	float x,y,z; // coords
-	float dir,dirdeg; // dir in radians, dir in degrees
+	float xdir,xdirdeg; // dir in radians, dir in degrees
+	float ydir,ydirdeg;
 
 	Player();
-	Player(float _x, float _y, float _z, float _dir);
+	Player(float _x, float _y, float _z, float _xdir);
 
 	void update(float dt, Map& map, sf::Window& window, bool hasFocus);
 	void collideDots(std::vector<Pickup>& dots);
 
-	const static float WALKSPEED = 3.f;
-	const static float STRAFESPEED = 2.f;
+	const static float WALKSPEED = 2.5f;
+	const static float STRAFESPEED = 1.5f;
 	const static float TURNSPEED = 3.f;
 };
 

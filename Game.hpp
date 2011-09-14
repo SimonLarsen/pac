@@ -17,6 +17,7 @@ class Game {
 public:
 	// Display lists
 	GLuint walls,floor,ceiling;
+	GLuint lampfloor,lampceiling;
 	GLuint smalldot,bigdot;
 	GLuint redghost;
 

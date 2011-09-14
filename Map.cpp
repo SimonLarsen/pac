@@ -7,30 +7,9 @@ Map::Map(){
 	startz = 0.5f;
 	data = 0;
 }
-Map::Map(int _w, int _h, char* _data){
-	w = _w;
-	h = _h;
-	data = _data;
-}
 
 Map::~Map(){
 	delete[] data;
-}
-
-bool Map::readFromFile(const char* filename){
-	std::ifstream ifs(filename,std::ios::binary);
-	if(ifs.is_open() == false){
-		return false;
-	}
-
-	int header[2];
-	ifs.read((char*)&header,sizeof(header));
-	w = header[0];
-	h = header[1];
-	data = new char[w*h];
-	ifs.read(data,w*h);
-	ifs.close();
-	return true;
 }
 
 bool Map::readFromImage(const char* filename, std::vector<Pickup>& dots){
@@ -55,10 +34,14 @@ bool Map::readFromImage(const char* filename, std::vector<Pickup>& dots){
 			else if(p == sf::Color::Blue){
 				data[ix+iy*w] = 1;
 			}
-			else if (p == sf::Color::Yellow){
+			else if (p == sf::Color::Red){
 				data[ix+iy*w] = 0;
 				startx = ix+0.5f;
 				startz = iy+0.5f;
+			}
+			else if (p == sf::Color::Yellow){
+				data[ix+iy*w] = 2;
+				dots.push_back(Pickup(ix+0.5f,iy+0.5f,pickupSmall));
 			}
 		}
 	}
