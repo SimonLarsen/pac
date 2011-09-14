@@ -8,6 +8,7 @@
 #include <GL/glu.h>
 #include <vector>
 #include <iostream>
+#include <cstdlib>
 #include "Player.hpp"
 #include "Map.hpp"
 #include "Pickup.hpp"
@@ -17,9 +18,9 @@ class Game {
 public:
 	// Display lists
 	GLuint walls,floor,ceiling;
-	GLuint lampfloor,lampceiling;
+	GLuint lampfloor,lampceiling,lampceilingoff;
 	GLuint smalldot,bigdot;
-	GLuint redghost;
+	GLuint redghost, shadow, portal;
 
 	Map map;
 	std::vector<Pickup> dots;
@@ -36,6 +37,10 @@ public:
 private:
 	bool running, hasFocus;
 	float elapsedtime;
+
+	// lamp blinking stuff
+	float lampTime;
+	bool lampOn;
 
 	bool init();
 	void loop();

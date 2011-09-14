@@ -2,6 +2,8 @@
 
 Game::Game(){
 	running = false;
+	lampOn = true;
+	lampTime = 0.f;
 }
 
 void Game::loop(){
@@ -29,19 +31,35 @@ void Game::loop(){
 			}
 		}
 
+		// Update player
 		pl.update(time, map, app, hasFocus);
 		pl.collideDots(dots);
 
+		// Update lamp blinking
+		if(lampTime < 0){
+			if(lampOn)
+				lampTime = (float)(rand() % 10 + 5)/100.f;
+			else
+				lampTime = (float)(rand() % 50 + 10)/100.f;
+			lampOn = !lampOn;
+		}
+		lampTime -= time;
+
+		// Clear screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glLoadIdentity();
 
+		// Rotate view
 		glRotatef(pl.ydirdeg,1,0,0);
 		glRotatef(pl.xdirdeg,0,1,0);
+
+		// Draw shadow
+		glCallList(shadow);
+
+		// Translate according to player coords
 		glTranslatef(-pl.x,-pl.y,-pl.z);
 
 		glPushMatrix();
-
-		glDisable(GL_BLEND);
 
 		// Draw walls, floors
 		for(int iy = 0; iy < map.h; ++iy) {
@@ -55,16 +73,20 @@ void Game::loop(){
 					glCallList(walls);
 				}
 				else if(tile == 2){
-					glCallList(lampfloor);
-					glCallList(lampceiling);
+					if(lampOn){
+						glCallList(lampfloor);
+						glCallList(lampceiling);
+					}
+					else{
+						glCallList(floor);
+						glCallList(lampceilingoff);
+					}
 				}
 				glTranslatef(1,0,0);
 			}
 			glTranslatef(-map.w,0,1);
 		}
 		glPopMatrix();
-
-		glEnable(GL_BLEND);
 
 		// Draw dots
 		for(int i = 0; i < dots.size(); ++i) {
@@ -91,21 +113,27 @@ bool Game::init(){
 	}
 	app.ShowMouseCursor(false);
 
-	walls = glGenLists(5);
+	walls = glGenLists(6);
 	floor = walls+1;
 	lampfloor = floor+1;
 	ceiling = lampfloor+1;
 	lampceiling = ceiling+1;
+	lampceilingoff = lampceiling+1;
 
-	smalldot = glGenLists(3);
+	smalldot = glGenLists(5);
 	bigdot = smalldot+1;
 	redghost = bigdot+1;
+	shadow = redghost+1;
+	portal = shadow+1;
+
 	Pickup::init(smalldot);
 	Ghost::init(redghost);
 
 	if(loadResources() == false){
 		return false;
 	}
+
+	srand((int)(clock.GetElapsedTime()*1000.f));
 
 	// Init projection matrix
 	glViewport(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
@@ -124,7 +152,8 @@ bool Game::init(){
 	glEnable(GL_TEXTURE_2D);
 	// Blend function
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	// Only allow pixels with alpha > 0.5 to be drawn
+	glDisable(GL_BLEND);
+	// Only allow pixels with alpha > 0.9 to be drawn
 	glAlphaFunc(GL_GREATER,0.9f);
 	glEnable(GL_ALPHA_TEST);
 	// Fog stuff

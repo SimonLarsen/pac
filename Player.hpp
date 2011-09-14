@@ -20,7 +20,7 @@ public:
 	void update(float dt, Map& map, sf::Window& window, bool hasFocus);
 	void collideDots(std::vector<Pickup>& dots);
 
-	const static float WALKSPEED = 2.5f;
+	const static float WALKSPEED = 2.0f;
 	const static float STRAFESPEED = 1.5f;
 	const static float TURNSPEED = 3.f;
 };
