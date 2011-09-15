@@ -7,7 +7,6 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include <vector>
-#include <iostream>
 #include <cstdlib>
 #include "Player.hpp"
 #include "Map.hpp"

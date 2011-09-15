@@ -18,8 +18,10 @@ public:
 	float x,z;
 	int dir;
 private:
-	float moved;
 	static GLuint redghostlist;
+	float moved;
+	int xmask(int _x, int _dir);
+	int zmask(int _z, int _dir);
 
 	const static float MOVESPEED = 0.5f;
 };

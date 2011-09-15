@@ -16,6 +16,10 @@ public:
 	char* data;
 
 	bool readFromImage(const char* filename, std::vector<Pickup>& dots);
+
+	bool canMove(int x, int y);
+	bool canMove(int index);
+	char get(int x, int y);
 };
 
 #endif

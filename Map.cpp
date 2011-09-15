@@ -51,3 +51,21 @@ bool Map::readFromImage(const char* filename, std::vector<Pickup>& dots){
 
 	return true;
 }
+
+bool Map::canMove(int x, int y){
+	if(data[x+y*w] != 1)
+		return true;
+	else
+		return false;
+}
+
+bool Map::canMove(int index){
+	if(data[index] != 1)
+		return true;
+	else
+		return false;
+}
+
+char Map::get(int x, int y){
+	return data[x+y*w];
+}

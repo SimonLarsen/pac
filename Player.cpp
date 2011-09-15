@@ -83,7 +83,8 @@ void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
 		tr = floor(nx+0.25)+floor(z-0.25)*map.w;
 		bl = floor(nx-0.25)+floor(z+0.25)*map.w;
 		br = floor(nx+0.25)+floor(z+0.25)*map.w;
-		if(map.data[tl] != 1 && map.data[tr] != 1 && map.data[bl] != 1 && map.data[br] != 1){
+		//if(!map.isWall(tl) && !map.isWall(tr) && !map.isWall(bl) && !map.isWall(br)){
+		if(map.canMove(nx-0.25,z-0.25) && map.canMove(nx+0.25,z-0.25) && map.canMove(nx-0.25,z+0.25) && map.canMove(nx+0.25,z+0.25)){
 			x = nx;
 		}
 
@@ -91,7 +92,7 @@ void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
 		tr = floor(x+0.25)+floor(nz-0.25)*map.w;
 		bl = floor(x-0.25)+floor(nz+0.25)*map.w;
 		br = floor(x+0.25)+floor(nz+0.25)*map.w;
-		if(map.data[tl] != 1 && map.data[tr] != 1 && map.data[bl] != 1 && map.data[br] != 1){
+		if(map.canMove(tl) && map.canMove(tr) && map.canMove(bl) && map.canMove(br)){
 			z = nz;
 		}
 		// Wrap if through portal
