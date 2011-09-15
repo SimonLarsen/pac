@@ -1,14 +1,20 @@
 #include "Ghost.hpp"
 
-int Ghost::redghostlist;
+GLuint Ghost::redghostlist;
 
 Ghost::Ghost(float _x, float _z){
 	x = _x;
 	z = _z;
+	dir = rand() % 4;
+	moved = 0.f;
 }
 
-void Ghost::init(int _redghostlist){
+void Ghost::init(GLuint _redghostlist){
 	redghostlist = _redghostlist;
+}
+
+void Ghost::update(float dt, Map& map){
+
 }
 
 void Ghost::draw(float dirdeg){

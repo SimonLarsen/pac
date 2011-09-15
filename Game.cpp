@@ -34,6 +34,8 @@ void Game::loop(){
 		// Update player
 		pl.update(time, map, app, hasFocus);
 		pl.collideDots(dots);
+		// Update ghosts
+		ghost.update(time,map);
 
 		// Update lamp blinking
 		if(lampTime < 0){
@@ -65,22 +67,27 @@ void Game::loop(){
 		for(int iy = 0; iy < map.h; ++iy) {
 			for(int ix = 0; ix < map.w; ++ix) {
 				char tile = map.data[iy*map.w+ix];
-				if(tile == 0){
-					glCallList(floor);
-					glCallList(ceiling);
-				}
-				else if(tile == 1){
-					glCallList(walls);
-				}
-				else if(tile == 2){
-					if(lampOn){
-						glCallList(lampfloor);
-						glCallList(lampceiling);
-					}
-					else{
+				switch(tile){
+					case 0:
 						glCallList(floor);
-						glCallList(lampceilingoff);
-					}
+						glCallList(ceiling);
+						break;
+					case 1:
+						glCallList(walls);
+						break;
+					case 2:
+						if(lampOn){
+							glCallList(lampfloor);
+							glCallList(lampceiling);
+						}
+						else{
+							glCallList(floor);
+							glCallList(lampceilingoff);
+						}
+						break;
+					case 3:
+						glCallList(portal);
+						break;
 				}
 				glTranslatef(1,0,0);
 			}

@@ -76,6 +76,7 @@ void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
 	}
 
 	if(moved){
+		// Check collision with walls
 		int tl,tr,bl,br;
 		// Check x axis
 		tl = floor(nx-0.25)+floor(z-0.25)*map.w;
@@ -93,6 +94,9 @@ void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
 		if(map.data[tl] != 1 && map.data[tr] != 1 && map.data[bl] != 1 && map.data[br] != 1){
 			z = nz;
 		}
+		// Wrap if through portal
+		if(x < 0.3f){ x = map.w-0.5f; }
+		else if(x > map.w-0.3f){ x = 0.5f; }
 	}
 }
 

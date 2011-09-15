@@ -44,7 +44,7 @@ bool Map::readFromImage(const char* filename, std::vector<Pickup>& dots){
 				dots.push_back(Pickup(ix+0.5f,iy+0.5f,pickupSmall));
 			}
 			else if(p == sf::Color::Magenta){
-				// add portal
+				data[ix+iy*w] = 3;
 			}
 		}
 	}
