@@ -19,10 +19,12 @@ public:
 	GLuint walls,floor,ceiling;
 	GLuint lampfloor,lampceiling,lampceilingoff;
 	GLuint smalldot,bigdot;
-	GLuint redghost, shadow, portal;
+	GLuint redghost, blueghost, pinkghost, yellowghost, scaredghost;
+	GLuint shadow, portal;
 
 	Map map;
 	std::vector<Pickup> dots;
+	std::vector<Ghost> ghosts;
 
 	sf::Texture tiles;
 	sf::Window app;
@@ -35,7 +37,7 @@ public:
 
 private:
 	bool running, hasFocus;
-	float elapsedtime;
+	float elapsedtime, scaredTime;
 
 	// lamp blinking stuff
 	float lampTime;

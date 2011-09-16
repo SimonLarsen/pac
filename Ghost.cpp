@@ -2,12 +2,13 @@
 
 GLuint Ghost::redghostlist;
 
-Ghost::Ghost(float _x, float _z, int _color){
-	x = _x;
-	z = _z;
+Ghost::Ghost(int _x, int _z, int _color){
+	x = _x+0.5f;
+	z = _z+0.5f;
 	dir = 5;
 	moved = 1.f;
 	color = _color;
+	scaredTime = 0.f;
 }
 
 void Ghost::init(GLuint _redghostlist){
@@ -16,8 +17,16 @@ void Ghost::init(GLuint _redghostlist){
 
 void Ghost::update(float dt, Map& map){
 	bool newDir = false;
+	float toMove;
 
-	float toMove = dt*MOVESPEED;
+	if(scaredTime > 0.f){
+		scaredTime -= dt;
+		toMove = dt*SCAREDSPEED;
+	}
+	else{
+		toMove = dt*MOVESPEED;
+	}
+
 	if(moved + toMove > 1.0f){
 		toMove = moved + toMove - 1.0f;
 		moved = 0.f;
@@ -51,6 +60,10 @@ void Ghost::update(float dt, Map& map){
 	}
 }
 
+void Ghost::setScared(){
+	scaredTime = SCAREDTIME;
+}
+
 int Ghost::xmask(int nx, int ndir){
 	if(ndir == 1)
 		return nx+1;
@@ -71,6 +84,16 @@ void Ghost::draw(float dirdeg){
 	glPushMatrix();
 	glTranslatef(x,0,z);
 	glRotatef(-dirdeg,0,1,0);
-	glCallList(redghostlist);
+	if(scaredTime > 0.f){
+		if(scaredTime > 3.f || (int)(scaredTime*10.f)%2 == 0){
+			glCallList(redghostlist+4);
+		}
+		else{	
+			glCallList(redghostlist+color);
+		}
+	}
+	else{
+		glCallList(redghostlist+color);
+	}
 	glPopMatrix();
 }

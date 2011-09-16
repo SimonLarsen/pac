@@ -11,7 +11,14 @@ void Game::loop(){
 
 	pl.y = 0.6f;
 
-	Ghost ghost(9.5f,16.5f,0);
+	ghosts.push_back(Ghost(9,9,0));
+	ghosts.push_back(Ghost(8,10,1));
+	ghosts.push_back(Ghost(9,10,2));
+	ghosts.push_back(Ghost(10,10,3));
+	std::vector<Ghost>::iterator it;
+	for(it = ghosts.begin(); it < ghosts.end(); ++it) {
+		it->setScared();	
+	}
 
 	sf::Mouse::SetPosition(sf::Vector2i(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),app);
 
@@ -35,7 +42,11 @@ void Game::loop(){
 		pl.update(time, map, app, hasFocus);
 		pl.collideDots(dots);
 		// Update ghosts
-		ghost.update(time,map);
+		
+		std::vector<Ghost>::iterator it;
+		for(it = ghosts.begin(); it < ghosts.end(); ++it) {
+			it->update(time,map);	
+		}
 
 		// Update lamp blinking
 		if(lampTime < 0){
@@ -99,7 +110,10 @@ void Game::loop(){
 		for(int i = 0; i < dots.size(); ++i) {
 			dots.at(i).draw(pl.xdirdeg);
 		}
-		ghost.draw(pl.xdirdeg);
+		// Draw ghosts
+		for(it = ghosts.begin(); it < ghosts.end(); ++it){
+			it->draw(pl.xdirdeg);
+		}
 
 		app.Display();
 	}
@@ -127,11 +141,16 @@ bool Game::init(){
 	lampceiling = ceiling+1;
 	lampceilingoff = lampceiling+1;
 
-	smalldot = glGenLists(5);
+	smalldot = glGenLists(4);
 	bigdot = smalldot+1;
-	redghost = bigdot+1;
-	shadow = redghost+1;
+	shadow = bigdot+1;
 	portal = shadow+1;
+
+	redghost = glGenLists(5);
+	blueghost = redghost+1;
+	pinkghost = blueghost+1;
+	yellowghost = pinkghost+1;
+	scaredghost = yellowghost+1;
 
 	Pickup::init(smalldot);
 	Ghost::init(redghost);
