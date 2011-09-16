@@ -11,7 +11,7 @@ void Game::loop(){
 
 	pl.y = 0.6f;
 
-	Ghost ghost(9.5f,16.5f);
+	Ghost ghost(9.5f,16.5f,0);
 
 	sf::Mouse::SetPosition(sf::Vector2i(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),app);
 

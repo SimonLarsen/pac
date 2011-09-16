@@ -10,13 +10,13 @@
 
 class Ghost {
 public:
-	Ghost(float _x, float _z);
+	Ghost(float _x, float _z, int _color);
 	static void init(GLuint _redghostlist);
 	void draw(float dirdeg);
 	void update(float dt,  Map& map);
 
 	float x,z;
-	int dir;
+	int dir, color;
 private:
 	static GLuint redghostlist;
 	float moved;

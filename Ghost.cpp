@@ -2,11 +2,12 @@
 
 GLuint Ghost::redghostlist;
 
-Ghost::Ghost(float _x, float _z){
+Ghost::Ghost(float _x, float _z, int _color){
 	x = _x;
 	z = _z;
 	dir = 5;
 	moved = 1.f;
+	color = _color;
 }
 
 void Ghost::init(GLuint _redghostlist){
@@ -31,25 +32,21 @@ void Ghost::update(float dt, Map& map){
 		case 3: x -= toMove; break;
 	}
 
-	int olddir = dir;
 	if(newDir){
+		int badDir;
 		if(map.canMove(xmask(x,dir),zmask(z,dir))){
-			for(int i = 0; i < 4; ++i) {
-				dir = (dir - 1 + (rand() % 3))%4;
-				if(dir != (olddir+2)%4 && map.canMove(xmask(x,dir),zmask(z,dir))){
-					std::cout << dir << std::endl;
-					return;
-				}
-			}
+			badDir = (dir+2)%4;
 		}
 		else{
-			for(int i = 0; i < 4; ++i) {
-				dir = (dir + 1 + (rand() % 3))%4;
-				if(dir != olddir && map.canMove(xmask(x,dir),zmask(z,dir))){
-					std::cout << dir << std::endl;
-					return;
-				}
+			badDir = dir;
+		}
+
+		dir = rand() % 4;
+		for(int i = 0; i < 4; ++i) {
+			if(dir != badDir && map.canMove(xmask(x,dir),zmask(z,dir))){
+				return;
 			}
+			dir = (dir+1)%4;
 		}
 	}
 }
