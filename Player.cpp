@@ -1,6 +1,6 @@
 #include "Player.hpp"
 
-Player::Player(){
+Player::Player() {
 	x = 0.f;
 	y = 0.6f;
 	z = 0.f;
@@ -10,11 +10,7 @@ Player::Player(){
 	ydirdeg = 0.f;
 }
 
-Player::Player(float _x, float _y, float _z, float _xdir){
-	x = _x;
-	y = _y;
-	z = _z;
-	xdir = _xdir;
+Player::Player(float x, float y, float z, float xdir) : x(x), y(y), z(z), xdir(xdir) {
 	xdirdeg = xdir * RADDEG;
 	ydir = 0.f;
 	ydirdeg = 0.f;
@@ -101,12 +97,17 @@ void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
 	}
 }
 
-void Player::collideDots(std::vector<Pickup>& dots){
+int Player::collideDots(std::vector<Pickup>& dots){
+	int ret = 0;
 	std::vector<Pickup>::iterator it;
 	for(it = dots.end(); it >= dots.begin(); it--){
 		float dist = pow((float)(x-it->x),2) + pow((float)(z-it->z),2);
 		if(dist < 0.15f){
+			if(it->type == pickupBig){
+				ret = 1; // Set ghosts to scared
+			}
 			dots.erase(it);
 		}
 	}
+	return ret;
 }

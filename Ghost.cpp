@@ -2,12 +2,9 @@
 
 GLuint Ghost::redghostlist;
 
-Ghost::Ghost(int _x, int _z, int _color){
-	x = _x+0.5f;
-	z = _z+0.5f;
+Ghost::Ghost(int x, int z, int color) : x(x+0.5f), z(z+0.5f), color(color) {
 	dir = 5;
 	moved = 1.f;
-	color = _color;
 	scaredTime = 0.f;
 }
 
@@ -42,6 +39,9 @@ void Ghost::update(float dt, Map& map){
 	}
 
 	if(newDir){
+		x = floor(x)+0.5f;
+		z = floor(z)+0.5f;
+
 		int badDir;
 		if(map.canMove(xmask(x,dir),zmask(z,dir))){
 			badDir = (dir+2)%4;

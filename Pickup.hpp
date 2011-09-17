@@ -7,7 +7,7 @@ enum PickupType {pickupSmall, pickupBig};
 
 class Pickup {
 public:
-	Pickup(float _x, float _y, PickupType _type);
+	Pickup(float x, float y, PickupType type);
 	float x,z;
 	PickupType type;
 	static int smalldotlist;

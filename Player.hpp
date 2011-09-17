@@ -15,10 +15,10 @@ public:
 	float ydir,ydirdeg;
 
 	Player();
-	Player(float _x, float _y, float _z, float _xdir);
+	Player(float x, float y, float z, float xdir);
 
 	void update(float dt, Map& map, sf::Window& window, bool hasFocus);
-	void collideDots(std::vector<Pickup>& dots);
+	int collideDots(std::vector<Pickup>& dots);
 
 	const static float WALKSPEED = 2.0f;
 	const static float STRAFESPEED = 1.5f;

@@ -10,7 +10,7 @@
 
 class Ghost {
 public:
-	Ghost(int _x, int _z, int _color);
+	Ghost(int x, int z, int color);
 	static void init(GLuint _redghostlist);
 	void draw(float dirdeg);
 	void update(float dt,  Map& map);
@@ -21,8 +21,8 @@ public:
 private:
 	static GLuint redghostlist;
 	float moved;
-	int xmask(int _x, int _dir);
-	int zmask(int _z, int _dir);
+	int xmask(int x, int dir);
+	int zmask(int z, int dir);
 
 	const static float MOVESPEED = 2.0f;
 	const static float SCAREDSPEED = 1.25f;

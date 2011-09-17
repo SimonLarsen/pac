@@ -17,6 +17,7 @@ void Game::loop(){
 
 	sf::Mouse::SetPosition(sf::Vector2i(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),app);
 
+	std::vector<Ghost>::iterator it;
 	while(running){
 		float time = clock.GetElapsedTime()/1000.f;
 		clock.Reset();
@@ -40,10 +41,12 @@ void Game::loop(){
 		if(!paused){
 			// Update player
 			pl.update(time, map, app, hasFocus);
-			pl.collideDots(dots);
+			if(pl.collideDots(dots) == 1){
+				for(it = ghosts.begin(); it < ghosts.end(); ++it){
+					it->setScared();	
+				}
+			}
 			// Update ghosts
-			
-			std::vector<Ghost>::iterator it;
 			for(it = ghosts.begin(); it < ghosts.end(); ++it) {
 				it->update(time,map);	
 			}
@@ -112,7 +115,6 @@ void Game::loop(){
 			dots.at(i).draw(pl.xdirdeg);
 		}
 		// Draw ghosts
-		std::vector<Ghost>::iterator it;
 		for(it = ghosts.begin(); it < ghosts.end(); ++it){
 			it->draw(pl.xdirdeg);
 		}

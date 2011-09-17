@@ -2,10 +2,8 @@
 
 int Pickup::smalldotlist;
 
-Pickup::Pickup(float _x, float _z, PickupType _type){
-	x = _x;
-	z = _z;
-	type = _type;
+Pickup::Pickup(float x, float z, PickupType type) : x(x), z(z), type(type) {
+
 }
 
 void Pickup::init(int _smalldotlist){
