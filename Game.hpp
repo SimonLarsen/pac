@@ -36,8 +36,8 @@ public:
 	int execute();
 
 private:
-	bool running, hasFocus;
-	float elapsedtime, scaredTime;
+	bool running, paused, hasFocus;
+	float scaredTime;
 
 	// lamp blinking stuff
 	float lampTime;

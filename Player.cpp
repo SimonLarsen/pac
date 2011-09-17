@@ -2,7 +2,7 @@
 
 Player::Player(){
 	x = 0.f;
-	y = 0.f;
+	y = 0.6f;
 	z = 0.f;
 	xdir = 0.f;
 	xdirdeg = 0.f;

@@ -4,6 +4,7 @@ Map::Map(){
 	w = 0;
 	h = 0;
 	numDots = 0;
+	numBigDots = 0;
 	startx = 0.5f;
 	startz = 0.5f;
 	data = 0;
@@ -44,6 +45,11 @@ bool Map::readFromImage(const char* filename, std::vector<Pickup>& dots){
 				data[ix+iy*w] = 2;
 				dots.push_back(Pickup(ix+0.5f,iy+0.5f,pickupSmall));
 				numDots++;
+			}
+			else if (p == sf::Color::Green){
+				data[ix+iy*w] = 0;
+				dots.push_back(Pickup(ix+0.5f,iy+0.5f,pickupBig));
+				numBigDots++;
 			}
 			else if(p == sf::Color::Magenta){
 				data[ix+iy*w] = 3;

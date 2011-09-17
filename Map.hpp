@@ -11,7 +11,7 @@ class Map {
 public:
 	Map();
 	~Map();
-	int w,h, numDots;
+	int w,h, numDots, numBigDots;
 	float startx,startz;
 	char* data;
 

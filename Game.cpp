@@ -4,31 +4,30 @@ Game::Game(){
 	running = false;
 	lampOn = true;
 	lampTime = 0.f;
+	paused = false;
 }
 
 void Game::loop(){
 	running = true;
 
-	pl.y = 0.6f;
-
 	ghosts.push_back(Ghost(9,9,0));
 	ghosts.push_back(Ghost(8,10,1));
 	ghosts.push_back(Ghost(9,10,2));
 	ghosts.push_back(Ghost(10,10,3));
-	std::vector<Ghost>::iterator it;
-	for(it = ghosts.begin(); it < ghosts.end(); ++it) {
-		it->setScared();	
-	}
 
 	sf::Mouse::SetPosition(sf::Vector2i(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),app);
 
 	while(running){
 		float time = clock.GetElapsedTime()/1000.f;
-		elapsedtime += time;
 		clock.Reset();
 		while(app.PollEvent(event)){
 			if(event.Type == sf::Event::Closed){
 				running = false;
+			}
+			else if(event.Type == sf::Event::KeyPressed){
+				if(event.Key.Code == sf::Keyboard::P){
+					paused = !paused;
+				}
 			}
 			else if(event.Type == sf::Event::GainedFocus){
 				hasFocus = true;
@@ -38,25 +37,27 @@ void Game::loop(){
 			}
 		}
 
-		// Update player
-		pl.update(time, map, app, hasFocus);
-		pl.collideDots(dots);
-		// Update ghosts
-		
-		std::vector<Ghost>::iterator it;
-		for(it = ghosts.begin(); it < ghosts.end(); ++it) {
-			it->update(time,map);	
-		}
+		if(!paused){
+			// Update player
+			pl.update(time, map, app, hasFocus);
+			pl.collideDots(dots);
+			// Update ghosts
+			
+			std::vector<Ghost>::iterator it;
+			for(it = ghosts.begin(); it < ghosts.end(); ++it) {
+				it->update(time,map);	
+			}
 
-		// Update lamp blinking
-		if(lampTime < 0){
-			if(lampOn)
-				lampTime = (float)(rand() % 10 + 5)/100.f;
-			else
-				lampTime = (float)(rand() % 50 + 10)/100.f;
-			lampOn = !lampOn;
+			// Update lamp blinking
+			if(lampTime < 0){
+				if(lampOn)
+					lampTime = (float)(rand() % 10 + 5)/100.f;
+				else
+					lampTime = (float)(rand() % 50 + 10)/100.f;
+				lampOn = !lampOn;
+			}
+			lampTime -= time;
 		}
-		lampTime -= time;
 
 		// Clear screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -111,6 +112,7 @@ void Game::loop(){
 			dots.at(i).draw(pl.xdirdeg);
 		}
 		// Draw ghosts
+		std::vector<Ghost>::iterator it;
 		for(it = ghosts.begin(); it < ghosts.end(); ++it){
 			it->draw(pl.xdirdeg);
 		}
