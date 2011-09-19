@@ -4,16 +4,15 @@
 #include <GL/gl.h>
 #include <cstdlib>
 #include <cmath>
+class Ghost;
 #include "Map.hpp"
-
-#include <iostream>
 
 class Ghost {
 public:
 	Ghost(int x, int z, int color);
 	static void init(GLuint _redghostlist);
 	void draw(float dirdeg);
-	void update(float dt,  Map& map);
+	void update(float dt, Map& map);
 	void setScared();
 
 	float x,z, scaredTime;

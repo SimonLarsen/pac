@@ -14,13 +14,14 @@ Map::~Map(){
 	delete[] data;
 }
 
-bool Map::readFromImage(const char* filename, std::vector<Pickup>& dots){
+bool Map::readFromImage(const char* filename, std::vector<Pickup>& dots, std::vector<Ghost>& ghosts){
 	sf::Image img;
 	if(img.LoadFromFile(filename) == false){
 		return false;
 	}
 	w = img.GetWidth();
 	h = img.GetHeight();
+	int ghostNum = 0;
 
 	data = new char[w*h];
 	for(int iy = 0; iy < h; ++iy){
@@ -53,6 +54,11 @@ bool Map::readFromImage(const char* filename, std::vector<Pickup>& dots){
 			}
 			else if(p == sf::Color::Magenta){
 				data[ix+iy*w] = 3;
+			}
+			else if(p == sf::Color::Cyan){
+				data[ix+iy*w] = 0;
+				ghosts.push_back(Ghost(ix,iy,ghostNum));
+				ghostNum = (ghostNum+1)%4;
 			}
 		}
 	}

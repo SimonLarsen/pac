@@ -10,11 +10,6 @@ Game::Game(){
 void Game::loop(){
 	running = true;
 
-	ghosts.push_back(Ghost(9,9,0));
-	ghosts.push_back(Ghost(8,10,1));
-	ghosts.push_back(Ghost(9,10,2));
-	ghosts.push_back(Ghost(10,10,3));
-
 	sf::Mouse::SetPosition(sf::Vector2i(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),app);
 
 	std::vector<Ghost>::iterator it;
@@ -50,6 +45,7 @@ void Game::loop(){
 			for(it = ghosts.begin(); it < ghosts.end(); ++it) {
 				it->update(time,map);	
 			}
+			pl.collideGhosts(ghosts);
 
 			// Update lamp blinking
 			if(lampTime < 0){
@@ -76,39 +72,8 @@ void Game::loop(){
 		// Translate according to player coords
 		glTranslatef(-pl.x,-pl.y,-pl.z);
 
-		glPushMatrix();
-
-		// Draw walls, floors
-		for(int iy = 0; iy < map.h; ++iy) {
-			for(int ix = 0; ix < map.w; ++ix) {
-				char tile = map.data[iy*map.w+ix];
-				switch(tile){
-					case 0:
-						glCallList(floor);
-						glCallList(ceiling);
-						break;
-					case 1:
-						glCallList(walls);
-						break;
-					case 2:
-						if(lampOn){
-							glCallList(lampfloor);
-							glCallList(lampceiling);
-						}
-						else{
-							glCallList(floor);
-							glCallList(lampceilingoff);
-						}
-						break;
-					case 3:
-						glCallList(portal);
-						break;
-				}
-				glTranslatef(1,0,0);
-			}
-			glTranslatef(-map.w,0,1);
-		}
-		glPopMatrix();
+		// Draw walls/tiles
+		drawWalls();
 
 		// Draw dots
 		for(int i = 0; i < dots.size(); ++i) {
@@ -119,8 +84,70 @@ void Game::loop(){
 			it->draw(pl.xdirdeg);
 		}
 
+		pushOrtho(); // Switch to 2D mode
+			pl.drawEffects();
+		popOrtho();
+
 		app.Display();
 	}
+}
+
+void Game::drawWalls(){
+	glPushMatrix();
+	// Draw walls, floors
+	for(int iy = 0; iy < map.h; ++iy) {
+		for(int ix = 0; ix < map.w; ++ix) {
+			char tile = map.data[iy*map.w+ix];
+			switch(tile){
+				case 0:
+					glCallList(floor);
+					glCallList(ceiling);
+					break;
+				case 1:
+					glCallList(walls);
+					break;
+				case 2:
+					if(lampOn){
+						glCallList(lampfloor);
+						glCallList(lampceiling);
+					}
+					else{
+						glCallList(floor);
+						glCallList(lampceilingoff);
+					}
+					break;
+				case 3:
+					glCallList(portal);
+					break;
+			}
+			glTranslatef(1,0,0);
+		}
+		glTranslatef(-map.w,0,1);
+	}
+	glPopMatrix();
+}
+
+void Game::pushOrtho(){
+	glPushMatrix();
+	glLoadIdentity();
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadIdentity();
+		glOrtho(0,SCREEN_WIDTH,0,SCREEN_HEIGHT,-1.f,1.f);
+	
+	glEnable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_DEPTH_TEST);
+}
+
+void Game::popOrtho(){
+	glDisable(GL_BLEND);
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_DEPTH_TEST);
+
+		glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	glPopMatrix();
 }
 
 int Game::execute(){
@@ -138,23 +165,7 @@ bool Game::init(){
 	}
 	app.ShowMouseCursor(false);
 
-	walls = glGenLists(6);
-	floor = walls+1;
-	lampfloor = floor+1;
-	ceiling = lampfloor+1;
-	lampceiling = ceiling+1;
-	lampceilingoff = lampceiling+1;
-
-	smalldot = glGenLists(4);
-	bigdot = smalldot+1;
-	shadow = bigdot+1;
-	portal = shadow+1;
-
-	redghost = glGenLists(5);
-	blueghost = redghost+1;
-	pinkghost = blueghost+1;
-	yellowghost = pinkghost+1;
-	scaredghost = yellowghost+1;
+	compileDisplayLists();
 
 	Pickup::init(smalldot);
 	Ghost::init(redghost);
@@ -207,10 +218,7 @@ bool Game::loadResources(){
 	Game::tiles.SetSmooth(false);
 	Game::tiles.Bind();
 
-	compileDisplayLists();
-
-	//if(map.readFromFile("res/map.dat") == false){
-	if(map.readFromImage("res/levels/1.png",dots) == false){
+	if(map.readFromImage("res/levels/1.png",dots,ghosts) == false){
 		return false;
 	}
 	pl.x = map.startx;

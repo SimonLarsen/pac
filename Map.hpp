@@ -1,11 +1,12 @@
 #ifndef __MAP_HPP
 	#define __MAP_HPP
 
-//#include <string>
 #include <fstream>
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include "Pickup.hpp"
+class Map;
+#include "Ghost.hpp"
 
 class Map {
 public:
@@ -15,7 +16,7 @@ public:
 	float startx,startz;
 	char* data;
 
-	bool readFromImage(const char* filename, std::vector<Pickup>& dots);
+	bool readFromImage(const char* filename, std::vector<Pickup>& dots, std::vector<Ghost>& ghosts);
 
 	bool canMove(int x, int y);
 	bool canMove(int index);

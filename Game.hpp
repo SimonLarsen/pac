@@ -47,6 +47,10 @@ private:
 	void loop();
 	bool loadResources();
 	void compileDisplayLists();
+
+	void drawWalls();
+	void pushOrtho();
+	void popOrtho();
 };
 
 #endif
