@@ -153,10 +153,10 @@ void Game::compileDisplayLists(){
 
 	glNewList(shadow,GL_COMPILE);
 		glBegin(GL_QUADS);
-		glTexCoord2f(1.f/8.f, 0.25f); 		glVertex3f(-0.25f,-0.59f,-0.25f);
-		glTexCoord2f(2.f/8.f, 0.25f); 		glVertex3f(0.25f,-0.59f,-0.25f);
-		glTexCoord2f(2.f/8.f, 3.f/8.f); 	glVertex3f(0.25f,-0.59f,0.25f);
-		glTexCoord2f(1.f/8.f, 3.f/8.f); 	glVertex3f(-0.25f,-0.59f,0.25f);
+		glTexCoord2f(1.f/8.f, 0.25f); 		glVertex3f(-0.25f,0.02f,-0.25f);
+		glTexCoord2f(2.f/8.f, 0.25f); 		glVertex3f(0.25f,0.02f,-0.25f);
+		glTexCoord2f(2.f/8.f, 3.f/8.f); 	glVertex3f(0.25f,0.02f,0.25f);
+		glTexCoord2f(1.f/8.f, 3.f/8.f); 	glVertex3f(-0.25f,0.02f,0.25f);
 		glEnd();
 	glEndList();
 

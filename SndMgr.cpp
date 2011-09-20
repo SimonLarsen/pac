@@ -12,7 +12,7 @@ bool SndMgr::loadSounds(){
 		return false;
 	sndBigDot.SetBuffer(bigDotBfr);
 
-	if(musNoise.OpenFromFile("./res/noise.ogg") == false)
+	if(musNoise.OpenFromFile("./res/noise2.ogg") == false)
 		return false;
 	musNoise.SetVolume(0.f);
 	musNoise.SetLoop(true);

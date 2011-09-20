@@ -85,11 +85,11 @@ void Game::loop(){
 		glRotatef(pl.ydirdeg,1,0,0);
 		glRotatef(pl.xdirdeg,0,1,0);
 
-		// Draw shadow
+		// Translate according to player coords,
+		// draw shadow in between translating y axis
+		glTranslatef(0,-pl.y,0);
 		glCallList(shadow);
-
-		// Translate according to player coords
-		glTranslatef(-pl.x,-pl.y,-pl.z);
+		glTranslatef(-pl.x,0,-pl.z);
 
 		// Draw walls/tiles
 		drawWalls();
@@ -204,7 +204,7 @@ bool Game::init(){
 	glViewport(0,0,SCREEN_WIDTH,SCREEN_HEIGHT);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(80.f,(GLfloat)SCREEN_WIDTH/(GLfloat)SCREEN_HEIGHT,0.1f,100.f);
+	gluPerspective(80.f,(GLfloat)SCREEN_WIDTH/(GLfloat)SCREEN_HEIGHT,0.01f,100.f);
 	// Init model view matrix
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

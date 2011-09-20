@@ -17,9 +17,9 @@ public:
 	float ydir,ydirdeg;
 	float ghostDist;
 	int state; // 0 = alive, 1 = dead/dying
+	float bop;
 
 	Player();
-	Player(float x, float y, float z, float xdir);
 
 	void update(float dt, Map& map, sf::Window& window, bool hasFocus);
 	int collideDots(std::vector<Pickup>& dots, SndMgr& sndmgr);

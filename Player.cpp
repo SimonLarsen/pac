@@ -9,13 +9,7 @@ Player::Player() {
 	xdirdeg = 0.f;
 	ydir = 0.f;
 	ydirdeg = 0.f;
-}
-
-Player::Player(float x, float y, float z, float xdir) : x(x), y(y), z(z), xdir(xdir) {
-	state = 0;
-	xdirdeg = xdir * RADDEG;
-	ydir = 0.f;
-	ydirdeg = 0.f;
+	bop = 0.f;
 }
 
 void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
@@ -75,6 +69,8 @@ void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
 		}
 
 		if(moved){
+			bop = fmod(bop+5.f*dt*WALKSPEED,2.f*PI);
+			y = 0.6+sin(bop)/25.f;
 			// Check collision with walls
 			int tl,tr,bl,br;
 			// Check x axis
@@ -146,8 +142,8 @@ void Player::collideGhosts(std::vector<Ghost>& ghosts, SndMgr& sndmgr){
 			ghostDist = dist;
 		}
 	}
-	if(ghostDist < 2.f){
-		sndmgr.setNoiseVolume((2.f-ghostDist)*40.f);
+	if(ghostDist < 4.f){
+		sndmgr.setNoiseVolume((4.f-ghostDist)*20.f);
 	}
 	else{
 		sndmgr.setNoiseVolume(0.f);
