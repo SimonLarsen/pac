@@ -2,10 +2,17 @@
 
 GLuint Ghost::redghostlist;
 
-Ghost::Ghost(int x, int z, int color) : x(x+0.5f), z(z+0.5f), color(color) {
+Ghost::Ghost(int x, int z, int color) : color(color), startx(x+0.5f), startz(z+0.5f) {
+	respawn();
+}
+
+void Ghost::respawn(){
+	alive = true;
+	x = startx;
+	z = startz;
+	scaredTime = 0.f;
 	dir = 5;
 	moved = 1.f;
-	scaredTime = 0.f;
 }
 
 void Ghost::init(GLuint _redghostlist){

@@ -12,7 +12,9 @@ void Game::loop(){
 
 	sf::Mouse::SetPosition(sf::Vector2i(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),app);
 
-	std::vector<Ghost>::iterator it;
+	std::vector<Ghost>::iterator git;
+	std::vector<Pickup>::iterator dit;
+	std::vector<Particle>::iterator pit;
 
 	while(running){
 		float time = clock.GetElapsedTime()/1000.f;
@@ -38,13 +40,24 @@ void Game::loop(){
 			// Update player
 			pl.update(time, map, app, hasFocus);
 			if(pl.collideDots(dots,sndmgr) == 1){
-				for(it = ghosts.begin(); it < ghosts.end(); ++it){
-					it->setScared();	
+				for(git = ghosts.begin(); git < ghosts.end(); ++git){
+					git->setScared();	
 				}
 			}
 			// Update ghosts
-			for(it = ghosts.begin(); it < ghosts.end(); ++it) {
-				it->update(time,map);	
+			for(git = ghosts.begin(); git < ghosts.end(); ++git) {
+				if(git->alive){
+					git->update(time,map);	
+				}
+				else{
+					particles.push_back(Particle(git->x,0,git->z,particleKillGhost));
+					git->respawn();
+				}
+			}
+
+			// Update particles
+			for(pit = particles.begin(); pit < particles.end(); ++pit) {
+				pit->update(time);	
 			}
 			pl.collideGhosts(ghosts,sndmgr);
 
@@ -81,8 +94,13 @@ void Game::loop(){
 			dots.at(i).draw(pl.xdirdeg);
 		}
 		// Draw ghosts
-		for(it = ghosts.begin(); it < ghosts.end(); ++it){
-			it->draw(pl.xdirdeg);
+		for(git = ghosts.begin(); git < ghosts.end(); ++git){
+			git->draw(pl.xdirdeg);
+		}
+
+		// Draw particles
+		for(pit = particles.begin(); pit < particles.end(); ++pit) {
+			pit->draw(pl.xdirdeg);
 		}
 
 		pushOrtho(); // Switch to 2D mode

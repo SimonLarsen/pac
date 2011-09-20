@@ -14,9 +14,12 @@ public:
 	void draw(float dirdeg);
 	void update(float dt, Map& map);
 	void setScared();
+	void respawn();
 
 	float x,z, scaredTime;
+	float startx, startz;
 	int dir, color;
+	bool alive;
 private:
 	static GLuint redghostlist;
 	float moved;

@@ -137,6 +137,7 @@ void Player::collideGhosts(std::vector<Ghost>& ghosts, SndMgr& sndmgr){
 		float dist = pow((float)(x-it->x),2) + pow((float)(z-it->z),2);
 		if(dist < 0.25f){
 			if(it->scaredTime > 0.f){
+				it->alive = false;
 			}
 			else{
 				state = 1;

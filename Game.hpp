@@ -9,9 +9,10 @@
 #include <vector>
 #include <cstdlib>
 #include "Player.hpp"
+#include "Ghost.hpp"
 #include "Map.hpp"
 #include "Pickup.hpp"
-#include "Ghost.hpp"
+#include "Particle.hpp"
 
 class Game {
 public:
@@ -24,6 +25,7 @@ public:
 
 	std::vector<Pickup> dots;
 	std::vector<Ghost> ghosts;
+	std::vector<Particle> particles;
 
 	sf::Texture tiles;
 	sf::RenderWindow app;

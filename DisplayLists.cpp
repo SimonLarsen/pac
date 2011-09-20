@@ -94,32 +94,6 @@ void Game::compileDisplayLists(){
 		glTexCoord2f(1.f/16.f,1.f/4.f); 	glVertex3f(0.125f,0.25f,0.f);
 		glTexCoord2f(1.f/16.f,5.f/16.f); 	glVertex3f(0.125f,0.f,0.f);
 		glTexCoord2f(0.f,5.f/16.f); 		glVertex3f(-0.125f,0.f,0.f);
-		/*
-		glTexCoord2f(1.f/16.f,3.f/8.f); 	glVertex3f(-0.125f,0.25f,0.125f);
-		glTexCoord2f(1.f/8.f,3.f/8.f); 		glVertex3f(0.125f,0.25f,0.125f);
-		glTexCoord2f(1.f/8.f,7.f/16.f); 	glVertex3f(0.125f,0.f,0.125f);
-		glTexCoord2f(1.f/16.f,7.f/16.f); 	glVertex3f(-0.125f,0.f,0.125f);
-
-		glTexCoord2f(1.f/16.f,3.f/8.f); 	glVertex3f(-0.125f,0.25f,-0.125f);
-		glTexCoord2f(1.f/8.f,3.f/8.f); 		glVertex3f(0.125f,0.25f,-0.125f);
-		glTexCoord2f(1.f/8.f,7.f/16.f); 	glVertex3f(0.125f,0.f,-0.125f);
-		glTexCoord2f(1.f/16.f,7.f/16.f); 	glVertex3f(-0.125f,0.f,-0.125f);
-
-		glTexCoord2f(1.f/16.f,3.f/8.f); 	glVertex3f(-0.125f,0.25f,-0.125f);
-		glTexCoord2f(1.f/8.f,3.f/8.f); 		glVertex3f(0.125f,0.25f,-0.125f);
-		glTexCoord2f(1.f/8.f,7.f/16.f); 	glVertex3f(0.125f,0.25f,0.125f);
-		glTexCoord2f(1.f/16.f,7.f/16.f); 	glVertex3f(-0.125f,0.25f,0.125f);
-
-		glTexCoord2f(1.f/16.f,3.f/8.f); 	glVertex3f(0.125f,0.25f,0.125f);
-		glTexCoord2f(1.f/8.f,3.f/8.f); 		glVertex3f(0.125f,0.25f,-0.125f);
-		glTexCoord2f(1.f/8.f,7.f/16.f); 	glVertex3f(0.125f,0.f,-0.125f);
-		glTexCoord2f(1.f/16.f,7.f/16.f); 	glVertex3f(0.125f,0.f,0.125f);
-
-		glTexCoord2f(1.f/16.f,3.f/8.f); 	glVertex3f(-0.125f,0.25f,0.125f);
-		glTexCoord2f(1.f/8.f,3.f/8.f); 		glVertex3f(-0.125f,0.25f,-0.125f);
-		glTexCoord2f(1.f/8.f,7.f/16.f); 	glVertex3f(-0.125f,0.f,-0.125f);
-		glTexCoord2f(1.f/16.f,7.f/16.f); 	glVertex3f(-0.125f,0.f,0.125f);
-		*/
 		glEnd();
 	glEndList();
 
