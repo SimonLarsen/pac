@@ -57,7 +57,12 @@ void Game::loop(){
 
 			// Update particles
 			for(pit = particles.begin(); pit < particles.end(); ++pit) {
-				pit->update(time);	
+				if(pit->alive){
+					pit->update(time);	
+				}
+				else{
+					particles.erase(pit);
+				}
 			}
 			pl.collideGhosts(ghosts,sndmgr);
 

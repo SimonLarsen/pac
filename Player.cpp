@@ -82,7 +82,6 @@ void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
 			tr = floor(nx+0.25)+floor(z-0.25)*map.w;
 			bl = floor(nx-0.25)+floor(z+0.25)*map.w;
 			br = floor(nx+0.25)+floor(z+0.25)*map.w;
-			//if(!map.isWall(tl) && !map.isWall(tr) && !map.isWall(bl) && !map.isWall(br)){
 			if(map.canMove(nx-0.25,z-0.25) && map.canMove(nx+0.25,z-0.25) && map.canMove(nx-0.25,z+0.25) && map.canMove(nx+0.25,z+0.25)){
 				x = nx;
 			}
@@ -149,6 +148,9 @@ void Player::collideGhosts(std::vector<Ghost>& ghosts, SndMgr& sndmgr){
 	}
 	if(ghostDist < 2.f){
 		sndmgr.setNoiseVolume((2.f-ghostDist)*40.f);
+	}
+	else{
+		sndmgr.setNoiseVolume(0.f);
 	}
 }
 

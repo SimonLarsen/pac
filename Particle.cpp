@@ -8,14 +8,15 @@ Particle::Particle(float x, float y, float z, ParticleType type) : x(x), y(y), z
 void Particle::update(float dt){
 	if(type == particleKillGhost){
 		frame += 8.f*dt;
-		if(frame > 10.f){
-			alive = false;
-		}
 	}
 }
 
 void Particle::draw(float dirdeg){
 	if(type == particleKillGhost){
+		glPushMatrix();
+		glTranslatef(x,y,z);
+		glRotatef(-dirdeg,0,1,0);
+
 		float tex1,tex2;
 		if(frame < 7.f){
 			tex1 = floor(frame)/8.f;
@@ -25,15 +26,26 @@ void Particle::draw(float dirdeg){
 			tex1 = 7.f/8.f;
 			tex2 = 1.f;
 		}
-		glPushMatrix();
-		glTranslatef(x,y,z);
-		glRotatef(-dirdeg,0,1,0);
 		glBegin(GL_QUADS);	
 			glTexCoord2f(tex1, 0.75f); 		glVertex3f(-0.45f,0.9f,0.f);
 			glTexCoord2f(tex2, 0.75f); 		glVertex3f(0.45f,0.9f,0.f);
 			glTexCoord2f(tex2, 0.875f); 	glVertex3f(0.45f,0.f,0.f);
 			glTexCoord2f(tex1, 0.875); 		glVertex3f(-0.45f,0.f,0.f);
 		glEnd();
-		glPopMatrix();
+
+		glRotatef(dirdeg,0,1,0);
+		if(frame >= 5.f){
+			if(frame < 20.f){
+				float scale = 1.f - (20.f-floor(frame))/16.f;
+				glScalef(scale,1,scale);
+			}
+			glBegin(GL_QUADS);	
+				glTexCoord2f(0.f,3.f/8.f); 		glVertex3f(-0.5f,0.02f,-0.5f);
+				glTexCoord2f(1.f/8.f,3.f/8.f); 	glVertex3f(0.5f,0.02f,-0.5f);
+				glTexCoord2f(1.f/8.f,0.5f); 	glVertex3f(0.5f,0.02f,0.5f);
+				glTexCoord2f(0.f,0.5f); 		glVertex3f(-0.5f,0.02f,0.5f);
+			glEnd();
+			glPopMatrix();
+		}
 	}
 }
