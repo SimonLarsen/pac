@@ -22,15 +22,17 @@ public:
 	GLuint redghost, blueghost, pinkghost, yellowghost, scaredghost;
 	GLuint shadow, portal;
 
-	Map map;
 	std::vector<Pickup> dots;
 	std::vector<Ghost> ghosts;
 
 	sf::Texture tiles;
-	sf::Window app;
+	sf::RenderWindow app;
 	sf::Event event;
 	sf::Clock clock;
+
+	Map map;
 	Player pl;
+	SndMgr sndmgr;
 
 	Game();
 	int execute();

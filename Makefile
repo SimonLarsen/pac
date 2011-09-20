@@ -1,6 +1,10 @@
-SOURCES = Game.cpp DisplayLists.cpp Player.cpp Map.cpp Pickup.cpp Ghost.cpp
-OBJECTS = Game.o Player.o Map.o Pickup.o DisplayLists.o Ghost.o
+SOURCES = Game.cpp DisplayLists.cpp Player.cpp Map.cpp Pickup.cpp Ghost.cpp SndMgr.cpp
+OBJECTS = Game.o Player.o Map.o Pickup.o DisplayLists.o Ghost.o SndMgr.o
 
-all:
+all: compile link
+
+compile:
 	g++ -c $(SOURCES)
-	g++ -o pac -lsfml-graphics -lsfml-system -lGLU $(OBJECTS)
+
+link:
+	g++ -o pac -lsfml-graphics -lsfml-audio -lsfml-system -lGLU $(OBJECTS)

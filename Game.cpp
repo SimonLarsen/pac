@@ -13,6 +13,7 @@ void Game::loop(){
 	sf::Mouse::SetPosition(sf::Vector2i(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),app);
 
 	std::vector<Ghost>::iterator it;
+
 	while(running){
 		float time = clock.GetElapsedTime()/1000.f;
 		clock.Reset();
@@ -36,7 +37,7 @@ void Game::loop(){
 		if(!paused){
 			// Update player
 			pl.update(time, map, app, hasFocus);
-			if(pl.collideDots(dots) == 1){
+			if(pl.collideDots(dots,sndmgr) == 1){
 				for(it = ghosts.begin(); it < ghosts.end(); ++it){
 					it->setScared();	
 				}
@@ -45,7 +46,7 @@ void Game::loop(){
 			for(it = ghosts.begin(); it < ghosts.end(); ++it) {
 				it->update(time,map);	
 			}
-			pl.collideGhosts(ghosts);
+			pl.collideGhosts(ghosts,sndmgr);
 
 			// Update lamp blinking
 			if(lampTime < 0){
@@ -223,6 +224,10 @@ bool Game::loadResources(){
 	}
 	pl.x = map.startx;
 	pl.z = map.startz;
+
+	if(sndmgr.loadSounds() == false){
+		return false;
+	}
 
 	return true;
 }

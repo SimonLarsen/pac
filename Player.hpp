@@ -4,10 +4,11 @@
 #include <SFML/Window.hpp>
 #include <math.h>
 #include <vector>
+#include <cstdlib>
 #include "Pickup.hpp"
 #include "defines.hpp"
 #include "Map.hpp"
-#include <cstdlib>
+#include "SndMgr.hpp"
 
 class Player {
 public:
@@ -21,8 +22,8 @@ public:
 	Player(float x, float y, float z, float xdir);
 
 	void update(float dt, Map& map, sf::Window& window, bool hasFocus);
-	int collideDots(std::vector<Pickup>& dots);
-	void collideGhosts(std::vector<Ghost>& ghosts);
+	int collideDots(std::vector<Pickup>& dots, SndMgr& sndmgr);
+	void collideGhosts(std::vector<Ghost>& ghosts, SndMgr& sndmgr);
 	void drawEffects();
 
 	const static float WALKSPEED = 2.0f;

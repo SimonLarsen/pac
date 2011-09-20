@@ -110,7 +110,7 @@ void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
 	}
 }
 
-int Player::collideDots(std::vector<Pickup>& dots){
+int Player::collideDots(std::vector<Pickup>& dots, SndMgr& sndmgr){
 	int ret = 0;
 	std::vector<Pickup>::iterator it;
 	for(it = dots.end(); it >= dots.begin(); it--){
@@ -118,6 +118,11 @@ int Player::collideDots(std::vector<Pickup>& dots){
 		if(dist < 0.15f){
 			if(it->type == pickupBig){
 				ret = 1; // Set ghosts to scared
+				sndmgr.playBigDot();
+			}
+			else{
+				// REMOVED FOR NOW
+				//sndmgr.playDot();
 			}
 			dots.erase(it);
 		}
@@ -125,7 +130,7 @@ int Player::collideDots(std::vector<Pickup>& dots){
 	return ret;
 }
 
-void Player::collideGhosts(std::vector<Ghost>& ghosts){
+void Player::collideGhosts(std::vector<Ghost>& ghosts, SndMgr& sndmgr){
 	ghostDist = 1000.f;
 	std::vector<Ghost>::iterator it;
 	for(it = ghosts.end(); it >= ghosts.begin(); it--) {
@@ -137,9 +142,12 @@ void Player::collideGhosts(std::vector<Ghost>& ghosts){
 				state = 1;
 			}
 		}
-		if(dist < ghostDist && it->scaredTime <= 0.f){
+		if(dist < ghostDist){
 			ghostDist = dist;
 		}
+	}
+	if(ghostDist < 2.f){
+		sndmgr.setNoiseVolume((2.f-ghostDist)*40.f);
 	}
 }
 
@@ -156,6 +164,7 @@ void Player::drawEffects(){
 			glEnd();
 			glColor4f(1.f,1.f,1.f,1.f);
 		glEnable(GL_TEXTURE_2D);
+		ghostDist = 1.f;
 	}
 	if(ghostDist < 2.f){
 		// 32-86
