@@ -8,4 +8,6 @@
 #define PI 3.14159265
 #define RADDEG 57.29577
 
+#define SCAREDTIME 10.f
+
 #endif

@@ -2,6 +2,8 @@
 	#define __PLAYER_HPP
 
 #include <SFML/Window.hpp>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include <math.h>
 #include <vector>
 #include <cstdlib>
@@ -17,11 +19,11 @@ public:
 	float ydir,ydirdeg;
 	float ghostDist;
 	int state; // 0 = alive, 1 = dead/dying
-	float bop;
+	float bop, killer;
 
 	Player();
 
-	void update(float dt, Map& map, sf::Window& window, bool hasFocus);
+	void update(float dt, Map& map, sf::Window& window, bool hasFocus, SndMgr& sndmgr);
 	int collideDots(std::vector<Pickup>& dots, SndMgr& sndmgr);
 	void collideGhosts(std::vector<Ghost>& ghosts, SndMgr& sndmgr);
 	void drawEffects();

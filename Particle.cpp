@@ -40,10 +40,10 @@ void Particle::draw(float dirdeg){
 				glScalef(scale,1,scale);
 			}
 			glBegin(GL_QUADS);	
-				glTexCoord2f(0.f,3.f/8.f); 		glVertex3f(-0.5f,0.02f,-0.5f);
-				glTexCoord2f(1.f/8.f,3.f/8.f); 	glVertex3f(0.5f,0.02f,-0.5f);
-				glTexCoord2f(1.f/8.f,0.5f); 	glVertex3f(0.5f,0.02f,0.5f);
-				glTexCoord2f(0.f,0.5f); 		glVertex3f(-0.5f,0.02f,0.5f);
+				glTexCoord2f(0.f,3.f/8.f); 		glVertex3f(-0.5f,0.01f,-0.5f);
+				glTexCoord2f(1.f/8.f,3.f/8.f); 	glVertex3f(0.5f,0.01f,-0.5f);
+				glTexCoord2f(1.f/8.f,0.5f); 	glVertex3f(0.5f,0.01f,0.5f);
+				glTexCoord2f(0.f,0.5f); 		glVertex3f(-0.5f,0.01f,0.5f);
 			glEnd();
 			glPopMatrix();
 		}

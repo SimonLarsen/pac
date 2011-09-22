@@ -12,7 +12,7 @@ Player::Player() {
 	bop = 0.f;
 }
 
-void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
+void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus, SndMgr& sndmgr){
 	if(state == 0){ // ALIVE
 		float nx = x;
 		float nz = z;
@@ -69,8 +69,13 @@ void Player::update(float dt, Map& map, sf::Window& window, bool hasFocus){
 		}
 
 		if(moved){
-			bop = fmod(bop+5.f*dt*WALKSPEED,2.f*PI);
-			y = 0.6+sin(bop)/25.f;
+			//bop = fmod(bop+5.f*dt*WALKSPEED,2.f*PI);
+			bop += 5.f*dt*WALKSPEED;
+			if(bop > 2.f*PI){
+				sndmgr.playStep();
+				bop = fmod(bop,2.f*PI);
+			}
+			y = 0.6+sin(bop-1.f)/25.f;
 			// Check collision with walls
 			int tl,tr,bl,br;
 			// Check x axis
@@ -109,7 +114,9 @@ int Player::collideDots(std::vector<Pickup>& dots, SndMgr& sndmgr){
 	int ret = 0;
 	std::vector<Pickup>::iterator it;
 	for(it = dots.end(); it >= dots.begin(); it--){
-		float dist = pow((float)(x-it->x),2) + pow((float)(z-it->z),2);
+		float xdist = it->x - x;
+		float zdist = it->z - z;
+		float dist = xdist*xdist + zdist*zdist;
 		if(dist < 0.15f){
 			if(it->type == pickupBig){
 				ret = 1; // Set ghosts to scared
@@ -129,12 +136,18 @@ void Player::collideGhosts(std::vector<Ghost>& ghosts, SndMgr& sndmgr){
 	ghostDist = 1000.f;
 	std::vector<Ghost>::iterator it;
 	for(it = ghosts.end(); it >= ghosts.begin(); it--) {
-		float dist = pow((float)(x-it->x),2) + pow((float)(z-it->z),2);
+		float xdist = it->x - x;
+		float zdist = it->z - z;
+		float dist = xdist*xdist + zdist*zdist;
 		if(dist < 0.25f){
 			if(it->scaredTime > 0.f){
 				it->alive = false;
+				sndmgr.playGhostDeath();
 			}
 			else{
+				if(state != 1){
+					sndmgr.playDeath();
+				}
 				state = 1;
 			}
 		}

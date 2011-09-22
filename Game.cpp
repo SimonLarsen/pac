@@ -38,7 +38,7 @@ void Game::loop(){
 
 		if(!paused){
 			// Update player
-			pl.update(time, map, app, hasFocus);
+			pl.update(time, map, app, hasFocus, sndmgr);
 			if(pl.collideDots(dots,sndmgr) == 1){
 				for(git = ghosts.begin(); git < ghosts.end(); ++git){
 					git->setScared();	
@@ -152,26 +152,26 @@ void Game::drawWalls(){
 }
 
 void Game::pushOrtho(){
+	glEnable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_DEPTH_TEST);
+
 	glPushMatrix();
 	glLoadIdentity();
 		glMatrixMode(GL_PROJECTION);
 		glPushMatrix();
 		glLoadIdentity();
 		glOrtho(0,SCREEN_WIDTH,0,SCREEN_HEIGHT,-1.f,1.f);
-	
-	glEnable(GL_BLEND);
-	glDisable(GL_ALPHA_TEST);
-	glDisable(GL_DEPTH_TEST);
 }
 
 void Game::popOrtho(){
-	glDisable(GL_BLEND);
-	glEnable(GL_ALPHA_TEST);
-	glEnable(GL_DEPTH_TEST);
-
 		glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+
+	glDisable(GL_BLEND);
+	glEnable(GL_ALPHA_TEST);
+	glEnable(GL_DEPTH_TEST);
 }
 
 int Game::execute(){

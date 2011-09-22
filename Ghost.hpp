@@ -4,6 +4,7 @@
 #include <GL/gl.h>
 #include <cstdlib>
 #include <cmath>
+#include "defines.hpp"
 class Ghost;
 #include "Map.hpp"
 
@@ -28,7 +29,6 @@ private:
 
 	const static float MOVESPEED = 2.0f;
 	const static float SCAREDSPEED = 1.25f;
-	const static float SCAREDTIME = 10.f;
 };
 
 #endif

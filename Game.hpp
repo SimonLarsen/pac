@@ -38,7 +38,6 @@ public:
 
 	Game();
 	int execute();
-
 private:
 	bool running, paused, hasFocus;
 	float scaredTime;
