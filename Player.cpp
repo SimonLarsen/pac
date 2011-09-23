@@ -122,10 +122,6 @@ int Player::collideDots(std::vector<Pickup>& dots, SndMgr& sndmgr){
 				ret = 1; // Set ghosts to scared
 				sndmgr.playBigDot();
 			}
-			else{
-				// REMOVED FOR NOW
-				//sndmgr.playDot();
-			}
 			dots.erase(it);
 		}
 	}

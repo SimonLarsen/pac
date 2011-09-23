@@ -4,10 +4,6 @@ SndMgr::SndMgr(){
 }
 
 bool SndMgr::loadSounds(){
-	if(dotBfr.LoadFromFile("./res/dot.wav") == false)
-		return false;
-	sndDot.SetBuffer(dotBfr);
-
 	if(bigDotBfr.LoadFromFile("./res/bigdot.wav") == false)
 		return false;
 	sndBigDot.SetBuffer(bigDotBfr);
@@ -41,10 +37,6 @@ bool SndMgr::loadSounds(){
 	musAmbient.Play();
 
 	return true;
-}
-
-void SndMgr::playDot(){
-	sndDot.Play();
 }
 
 void SndMgr::playBigDot(){
