@@ -7,7 +7,7 @@ bool SndMgr::loadSounds(){
 	if(bigDotBfr.LoadFromFile("./res/bigdot.wav") == false)
 		return false;
 	sndBigDot.SetBuffer(bigDotBfr);
-	sndBigDot.SetVolume(50.f);
+	sndBigDot.SetVolume(70.f);
 
 	if(ghostDeathBfr.LoadFromFile("./res/ghostdeath.wav") == false)
 		return false;

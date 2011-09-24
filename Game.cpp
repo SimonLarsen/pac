@@ -7,15 +7,16 @@ Game::Game(){
 	paused = false;
 }
 
+/*
+ * Main game loop.
+ */
 void Game::loop(){
 	running = true;
 
+	// Fade in
+	fade(0,2.f);
+
 	sf::Mouse::SetPosition(sf::Vector2i(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),app);
-
-	std::vector<Ghost>::iterator git;
-	std::vector<Pickup>::iterator dit;
-	std::vector<Particle>::iterator pit;
-
 	while(running){
 		float time = clock.GetElapsedTime()/1000.f;
 		clock.Reset();
@@ -79,43 +80,104 @@ void Game::loop(){
 
 		// Clear screen
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glLoadIdentity();
+		// Draw objects
+		draw();
+		// Draw 2D effects
+		draw2D();
+		// redraw screen
+		app.Display();
+	}
 
-		// Rotate view
-		glRotatef(pl.ydirdeg,1,0,0);
-		glRotatef(pl.xdirdeg,0,1,0);
+	// fade out
+	fade(1,1.f);
+}
 
-		// Translate according to player coords,
-		// draw shadow in between translating y axis
-		glTranslatef(0,-pl.y,0);
-		glCallList(shadow);
-		glTranslatef(-pl.x,0,-pl.z);
+/*
+ * Translates screen to player position
+ * and draws all 3D objects in world, including billboard sprites.
+ */
+void Game::draw(){
+	glLoadIdentity();
+	// Rotate view
+	glRotatef(pl.ydirdeg,1,0,0);
+	glRotatef(pl.xdirdeg,0,1,0);
 
-		// Draw walls/tiles
-		drawWalls();
+	// Translate according to player coords,
+	// draw shadow in between translating y axis
+	glTranslatef(0,-pl.y,0);
+	glCallList(shadow);
+	glTranslatef(-pl.x,0,-pl.z);
 
-		// Draw dots
-		for(int i = 0; i < dots.size(); ++i) {
-			dots.at(i).draw(pl.xdirdeg);
+	// Draw walls/tiles
+	drawWalls();
+
+	// Draw dots
+	for(int i = 0; i < dots.size(); ++i) {
+		dots.at(i).draw(pl.xdirdeg);
+	}
+	// Draw ghosts
+	for(git = ghosts.begin(); git < ghosts.end(); ++git){
+		git->draw(pl.xdirdeg);
+	}
+
+	// Draw particles
+	for(pit = particles.begin(); pit < particles.end(); ++pit) {
+		pit->draw(pl.xdirdeg);
+	}
+}
+
+/*
+ * Switches to orthogonal matrix
+ * and draws 2D screen effects (white noise, red etc.)
+ */
+void Game::draw2D(){
+	pushOrtho();
+		pl.drawEffects();
+	popOrtho();
+}
+
+/*
+ * Fades screen to or from black.
+ * Objets are not updated while fading.
+ *
+ * dir Determines fade direction. 0 for form black, 1 for to black.
+ * fadetime Determines number of seconds to fade.
+ */
+void Game::fade(int dir, float fadetime){
+	float starttime = fadetime;
+	float time = starttime;
+
+	while(time > 0){
+		float dt = clock.GetElapsedTime()/1000.f;
+		clock.Reset();
+		time -= dt;	
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		draw();
+
+		float alpha = time/starttime;
+		if(dir == 1){
+			alpha = 1-alpha;
 		}
-		// Draw ghosts
-		for(git = ghosts.begin(); git < ghosts.end(); ++git){
-			git->draw(pl.xdirdeg);
-		}
 
-		// Draw particles
-		for(pit = particles.begin(); pit < particles.end(); ++pit) {
-			pit->draw(pl.xdirdeg);
-		}
-
-		pushOrtho(); // Switch to 2D mode
-			pl.drawEffects();
+		glColor4f(0.f,0.f,0.f,alpha);
+		pushOrtho();
+			glBegin(GL_QUADS);
+				glVertex2f(0,0);
+				glVertex2f(SCREEN_WIDTH,0);
+				glVertex2f(SCREEN_WIDTH,SCREEN_HEIGHT);
+				glVertex2f(0,SCREEN_HEIGHT);
+			glEnd();
 		popOrtho();
-
+		glColor4f(1.f,1.f,1.f,1.f);
 		app.Display();
 	}
 }
 
+/*
+ * Loops through map and draws tiles using
+ * display lists.
+ */
 void Game::drawWalls(){
 	glPushMatrix();
 	// Draw walls, floors
@@ -151,6 +213,9 @@ void Game::drawWalls(){
 	glPopMatrix();
 }
 
+/*
+ * Switches to orthogonal matrix for 2D drawing
+ */
 void Game::pushOrtho(){
 	glEnable(GL_BLEND);
 	glDisable(GL_ALPHA_TEST);
@@ -164,6 +229,10 @@ void Game::pushOrtho(){
 		glOrtho(0,SCREEN_WIDTH,0,SCREEN_HEIGHT,-1.f,1.f);
 }
 
+/*
+ * Pops original perspective matrix.
+ * To be used after pushOrtho()
+ */
 void Game::popOrtho(){
 		glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);
@@ -182,6 +251,9 @@ int Game::execute(){
 	return 0;
 }
 
+/*
+ * Creates SFML window and sets up OpenGL settings.
+ */
 bool Game::init(){
 	app.Create(sf::VideoMode(SCREEN_WIDTH,SCREEN_HEIGHT,SCREEN_BPP),"FPS",sf::Style::Close);
 	if(app.IsOpened() == false){
@@ -235,6 +307,10 @@ bool Game::init(){
 	return true;
 }
 
+/*
+ * Loads resoures from files.
+ * Returns false if something fails to load.
+ */
 bool Game::loadResources(){
 	if(tiles.LoadFromFile("res/tiles.png") == false){
 		return false;

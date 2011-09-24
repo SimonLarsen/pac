@@ -48,12 +48,21 @@ private:
 
 	bool init();
 	void loop();
+
+	void draw();
+	void draw2D();
+	void drawWalls();
+	void fade(int dir, float fadetime);
+
+	void pushOrtho();
+	void popOrtho();
+
 	bool loadResources();
 	void compileDisplayLists();
 
-	void drawWalls();
-	void pushOrtho();
-	void popOrtho();
+	std::vector<Ghost>::iterator git;
+	std::vector<Pickup>::iterator dit;
+	std::vector<Particle>::iterator pit;
 };
 
 #endif
