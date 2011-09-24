@@ -13,7 +13,7 @@ bool SndMgr::loadSounds(){
 		return false;
 	sndGhostDeath.SetBuffer(ghostDeathBfr);
 
-	if(deathBfr.LoadFromFile("./res/death.wav") == false)
+	if(deathBfr.LoadFromFile("./res/deathorig.wav") == false)
 		return false;
 	sndDeath.SetBuffer(deathBfr);
 
