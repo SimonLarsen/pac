@@ -42,7 +42,6 @@ private:
 	bool running, paused, hasFocus;
 	float scaredTime;
 
-	// lamp blinking stuff
 	float lampTime;
 	bool lampOn;
 
